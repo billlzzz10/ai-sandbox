@@ -1,0 +1,4 @@
+# 📄 _common/tools/file_system/ls.yaml
+
+name: "ls"
+description: "Lists the contents of a directory."
