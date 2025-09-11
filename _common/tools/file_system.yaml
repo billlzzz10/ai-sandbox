@@ -1,0 +1,4 @@
+# 📄 _common/tools/file_system/read_file.yaml
+
+name: "read_file"
+description: "Reads the complete content of a specified file."
