@@ -1,0 +1,4 @@
+# 📄 _common/tools/file_system/edit_file.yaml
+
+name: "edit_file"
+description: "Edits an existing file with new content."
