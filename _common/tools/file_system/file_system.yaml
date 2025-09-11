@@ -1,0 +1,9 @@
+# 📄 _common/tools/file_system/toolset.yaml
+
+# This is the index file for the file_system toolset.
+name: "file-system-tools"
+description: "A collection of common tools for interacting with the file system."
+imports:
+  - "./read_file.yaml"
+  - "./ls.yaml"
+  - "./edit_file.yaml"
