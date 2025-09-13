@@ -1,0 +1,12 @@
+name: "planning-agent"
+version: "1.0.0"
+description: "Agent for breaking down tasks and creating project plans."
+imports:
+  prompts:
+    - "../../prompt/productivity/planning_agent_prompt.yaml"
+  rules:
+    - "../../rule/project_planning_rules.md"
+  tools:
+    - "../../tool/file_system/read_file.yaml"
+    - "../../tool/file_system/write_file.yaml"
+    - "../../tool/web_search/search.yaml"

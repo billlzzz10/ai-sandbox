@@ -1,0 +1,7 @@
+name: "focus_window"
+description: "Brings a window to the foreground."
+parameters:
+  - name: "window_title"
+    type: "string"
+    description: "The title of the window to focus."
+    required: true

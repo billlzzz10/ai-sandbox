@@ -1,0 +1,7 @@
+name: "set_clipboard"
+description: "Sets the content of the clipboard."
+parameters:
+  - name: "content"
+    type: "string"
+    description: "The content to set the clipboard to."
+    required: true

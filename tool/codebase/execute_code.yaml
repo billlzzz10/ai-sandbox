@@ -1,0 +1,11 @@
+name: "execute_code"
+description: "Executes a block of code in a specified language."
+parameters:
+  - name: "language"
+    type: "string"
+    description: "The programming language of the code block (e.g., 'python', 'bash')."
+    required: true
+  - name: "code"
+    type: "string"
+    description: "The block of code to execute."
+    required: true

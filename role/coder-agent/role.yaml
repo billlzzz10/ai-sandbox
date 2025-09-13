@@ -1,0 +1,16 @@
+name: "coder-agent"
+version: "1.0.0"
+description: "Agent สำหรับการเขียน, แก้ไข, และทดสอบโค้ดโดยเฉพาะ"
+imports:
+  prompts:
+    - "../../prompt/coding/coder_agent_prompt.yaml"
+  rules:
+    - "../../rule/standard_behavioral_rules.md"
+    - "../../rule/coding_best_practices.md"
+  tools:
+    - "../../tool/file_system/read_file.yaml"
+    - "../../tool/file_system/write_file.yaml"
+    - "../../tool/file_system/delete_file.yaml"
+    - "../../tool/codebase/execute_code.yaml" # For running tests
+    - "../../tool/local_apps/open_in_vscode.yaml"
+    - "../../tool/web_search/search.yaml"
