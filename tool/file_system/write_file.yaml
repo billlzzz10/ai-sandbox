@@ -1,0 +1,11 @@
+name: "write_file"
+description: "Writes content to a file, overwriting the file if it already exists."
+parameters:
+  - name: "path"
+    type: "string"
+    description: "The path to the file to be written to."
+    required: true
+  - name: "content"
+    type: "string"
+    description: "The content to write to the file."
+    required: true

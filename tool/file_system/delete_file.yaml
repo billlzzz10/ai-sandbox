@@ -1,0 +1,7 @@
+name: "delete_file"
+description: "Deletes a file."
+parameters:
+  - name: "path"
+    type: "string"
+    description: "The path to the file to be deleted."
+    required: true

@@ -1,0 +1,7 @@
+name: "open_in_vscode"
+description: "Opens a file or directory in Visual Studio Code."
+parameters:
+  - name: "path"
+    type: "string"
+    description: "The path to the file or directory to open."
+    required: true

@@ -1,0 +1,9 @@
+name: "prompt-improver"
+version: "1.0.0"
+description: "A meta-agent that assists users in refining their prompts for other agents."
+imports:
+  prompts:
+    - "../../prompt/system/prompt_improver_prompt.yaml"
+  rules:
+    - "../../rule/system/prompt_improvement_rules.md"
+  tools: [] # This agent's primary function is text processing, no external tools needed initially.

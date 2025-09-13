@@ -1,0 +1,23 @@
+# ชื่อ Tool (จะถูกแทนที่)
+name: "$TOOL_NAME"
+
+
+# คำอธิบายสำหรับคนอ่าน (จะถูกแทนที่)
+description: "$TOOL_DESCRIPTION"
+
+
+# นโยบายการทำงาน (จะถูกแทนที่)
+execution_policy:
+  default_mode: "$DEFAULT_MODE"
+  allowed_modes: [$ALLOWED_MODES]
+
+
+# สภาพแวดล้อมการทำงาน (จะถูกแทนที่)
+execution_environment:
+  type: "$EXECUTION_TYPE"
+  command: "$COMMAND" # (Optional)
+  target: "$TARGET"
+  # ใส่ Endpoint URL หรือ Path ที่นี่
+  # ตัวอย่าง: "https://api.example.com/v1" หรือ "$WORKSPACE_PATH/data.csv"
+  endpoint: "$ENDPOINT_PLACEHOLDER"
+  requirements: [$REQUIREMENTS]

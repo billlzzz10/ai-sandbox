@@ -1,0 +1,7 @@
+name: "take_screenshot"
+description: "Takes a screenshot of the entire screen."
+parameters:
+  - name: "filename"
+    type: "string"
+    description: "The filename to save the screenshot as."
+    required: true

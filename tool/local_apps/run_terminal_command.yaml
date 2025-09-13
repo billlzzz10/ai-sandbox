@@ -1,0 +1,7 @@
+name: "run_terminal_command"
+description: "Runs a command in the local terminal."
+parameters:
+  - name: "command"
+    type: "string"
+    description: "The command to run."
+    required: true

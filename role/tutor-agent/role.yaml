@@ -1,0 +1,18 @@
+name: "tutor-agent"
+version: "1.0.0"
+description: "An agent that helps users learn complex topics."
+imports:
+  prompts:
+    - "../../prompt/learning/ai_tutor_prompt.yaml"
+  rules:
+    - "../../rule/learning/tutor_rules.md"
+  tools:
+    # Learning Tools
+    - "../../tool/learning/create_learning_plan.yaml"
+    - "../../tool/learning/find_analogy.yaml"
+    - "../../tool/learning/generate_quiz.yaml"
+    - "../../tool/learning/evaluate_answer.yaml"
+    # Memory Tools for context
+    - "../../tool/memory/prompt_cache.yaml"
+    - "../../tool/memory/file_manager.yaml"
+    - "../../tool/memory/user_profile_manager.yaml"

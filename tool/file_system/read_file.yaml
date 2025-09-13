@@ -1,0 +1,7 @@
+name: "read_file"
+description: "Reads the entire content of a file."
+parameters:
+  - name: "path"
+    type: "string"
+    description: "The path to the file to be read."
+    required: true
