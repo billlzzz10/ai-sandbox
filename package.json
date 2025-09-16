@@ -1,0 +1,19 @@
+{
+  "name": "ai-sandbox",
+  "version": "1.0.0",
+  "description": "Express-based runtime for the AI Agent Sandbox architecture.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "NODE_ENV=development node server.js",
+    "test": "node scripts/smoke-test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "helmet": "^7.0.0",
+    "js-yaml": "^4.1.0"
+  }
+}
