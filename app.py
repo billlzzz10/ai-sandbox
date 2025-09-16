@@ -2,6 +2,9 @@
 import sys, os, re
 from typing import Any, Dict, List, Optional, Callable
 
+# Define the safe base directory for importable resources
+BASE_DATA_DIR = os.path.abspath(os.path.dirname(__file__))
+
 # ---- Tool Implementations (Stubs) ----
 from tools.core_logic import *
 from tools.api_stubs import *
@@ -132,7 +135,9 @@ class Agent:
 # ---- Loader ----
 def resolve_path(base_file: str, rel: str) -> str:
     base_dir = os.path.dirname(base_file)
-    abs_path = os.path.normpath(os.path.join(base_dir, rel))
+    abs_path = os.path.abspath(os.path.normpath(os.path.join(base_dir, rel)))
+    if not abs_path.startswith(BASE_DATA_DIR + os.sep):
+        raise Exception(f"Access to path '{abs_path}' is not allowed. It must reside within '{BASE_DATA_DIR}'.")
     if not os.path.exists(abs_path):
         raise FileNotFoundError(f"Missing import: {rel} -> {abs_path}")
     return abs_path
