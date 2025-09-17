@@ -1,6 +1,6 @@
 # AI Agent Sandbox
 
-Welcome to the AI Agent Sandbox, a repository for designing, managing, and benchmarking standardized AI agents based on a "Five Pillars" architecture.
+Welcome to the AI Agent Sandbox, a repository for designing, managing, and benchmarking standardized AI agents based on a "Five Pillars" architecture. The runtime is implemented as a secure Express server powered by Node.js so that the sandbox can be accessed over HTTP in addition to direct scripting.
 
 ## The Five Pillars Architecture
 
@@ -16,18 +16,52 @@ This project is built on a modular, configuration-driven architecture composed o
 
 5.  **/template/**: Contains master templates for creating new components, ensuring consistency across the architecture.
 
-## Core Engine (`app.py`)
+## Express Runtime (`server.js`)
 
-The `app.py` script is the heart of the sandbox. It's a lightweight, dependency-free Python script that can load, parse, and preview any agent defined in the `/role/` directory.
+The former Python CLI has been replaced with a hardened Express application (`server.js`). It exposes HTTP endpoints for previewing agents and executing tools while keeping all file operations sandboxed inside this repository.
 
-### Usage
-To load and preview an agent, run:
+### Installation
+
+Install the Node.js dependencies once per checkout:
+
 ```bash
-python app.py <path-to-role.yaml> "<user-prompt>"
+npm install
 ```
-**Example:**
+
+### Start the server
+
 ```bash
-python app.py role/coder-agent/role.yaml "write a hello world function in python"
+npm start
+```
+
+The server listens on `http://localhost:3000` by default. Override the port by exporting `PORT=<number>` before starting the server.
+
+### Preview an agent
+
+Send a POST request to `/agents/preview` with the path to a role file and an optional prompt:
+
+```bash
+curl -X POST http://localhost:3000/agents/preview \
+  -H 'Content-Type: application/json' \
+  -d '{"rolePath": "role/coder-agent/role.yaml", "prompt": "write a hello world function in python"}'
+```
+
+The response contains the refined prompt, loaded rules, and tool metadata.
+
+### Execute a tool
+
+```bash
+curl -X POST http://localhost:3000/agents/tools/execute \
+  -H 'Content-Type: application/json' \
+  -d '{"rolePath": "role/coder-agent/role.yaml", "toolName": "write_python", "args": ["print(1)"]}'
+```
+
+### Smoke test
+
+A lightweight verification script is available:
+
+```bash
+npm test
 ```
 
 ## How to Add a New Agent
@@ -54,7 +88,13 @@ python app.py role/coder-agent/role.yaml "write a hello world function in python
         - "../../tool/web_search/search.yaml"
     ```
 
-5.  **Test it:** Run `python app.py role/new-agent/role.yaml "test prompt"` to see if it loads correctly.
+5.  **Test it:** Use the preview endpoint to confirm everything loads correctly:
+
+    ```bash
+    curl -X POST http://localhost:3000/agents/preview \
+      -H 'Content-Type: application/json' \
+      -d '{"rolePath": "role/new-agent/role.yaml", "prompt": "test prompt"}'
+    ```
 
 ## How to Add a New Tool
 
@@ -67,24 +107,17 @@ python app.py role/coder-agent/role.yaml "write a hello world function in python
     # ... other fields
     ```
 
-2.  **Implement the Stub:** Open `tools/api_stubs.py` (for API tools) or `tools/core_logic.py` (for internal functions) and add a Python function stub for your new tool.
+2.  **Implement the Stub:** Open `tools/apiStubs.js` (for API tools) or `tools/coreLogic.js` (for internal functions) and add a JavaScript function stub for your new tool.
 
-    ```python
-    # In tools/core_logic.py
-    def new_tool_name(*args, **kwargs):
-        print(f"[TOOL EXECUTED] new_tool_name with args: {args}, {kwargs}")
-        return {"status": "success", "result": "some_value"}
-    ```
-
-3.  **Register the Tool:** Open `app.py` and add your new function to the `MASTER_TOOL_MAP` dictionary.
-
-    ```python
-    # In app.py
-    MASTER_TOOL_MAP = {
-        # ... other tools
-        "new_tool_name": new_tool_name,
+    ```javascript
+    // In tools/coreLogic.js
+    function new_tool_name(...args) {
+      console.log(`[TOOL EXECUTED] new_tool_name with args: ${JSON.stringify(args)}`);
+      return { status: 'success', result: 'some_value' };
     }
     ```
+
+3.  **Register the Tool:** Open `tools/index.js` and add your new function to the `MASTER_TOOL_MAP` dictionary so that the Express server can locate it.
 
 4.  **Add to an Agent:** Add the path to your new tool's `.yaml` file to an agent's `role.yaml` to grant it access.
 
