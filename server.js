@@ -80,7 +80,7 @@ class Agent {
     });
   }
 
-  runTool(toolName, args = []) {
+  async runTool(toolName, args = []) {
     const tool = this.tools.get(toolName);
     if (!tool) {
       return { success: false, error: `Tool '${toolName}' not found in agent's registry.` };
@@ -92,7 +92,7 @@ class Agent {
     const safeArgs = Array.isArray(args) ? args : [args];
 
     try {
-      const result = tool.implementation(...safeArgs);
+      const result = await Promise.resolve(tool.implementation(...safeArgs));
       return { success: true, result };
     } catch (error) {
       return { success: false, error: `Error executing tool '${toolName}': ${error.message}` };
@@ -251,7 +251,7 @@ function createServer() {
     }
   });
 
-  app.post('/agents/tools/execute', (req, res) => {
+  app.post('/agents/tools/execute', async (req, res) => {
     const { rolePath, toolName, args } = req.body || {};
 
     if (typeof rolePath !== 'string' || rolePath.trim() === '') {
@@ -263,7 +263,7 @@ function createServer() {
 
     try {
       const agent = loadAgent(rolePath.trim());
-      const execution = agent.runTool(toolName.trim(), args);
+      const execution = await agent.runTool(toolName.trim(), args);
       if (!execution.success) {
         return res.status(400).json({ error: execution.error });
       }
