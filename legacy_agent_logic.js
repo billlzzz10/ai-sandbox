@@ -1,11 +1,6 @@
-'use strict';
-
-const express = require('express');
-const helmet = require('helmet');
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
-
 const { MASTER_TOOL_MAP } = require('./tools');
 
 const BASE_DATA_DIR = path.resolve(__dirname);
@@ -194,110 +189,18 @@ function loadAgent(rolePath) {
 
 function improvePromptStub(rawPrompt = '') {
   const promptText = typeof rawPrompt === 'string' ? rawPrompt : String(rawPrompt ?? '');
-  console.log('\n--- Running Prompt Improvement Assistant (Stub) ---');
+  console.log('\\n--- Running Prompt Improvement Assistant (Stub) ---');
   console.log(`Original Prompt: '${promptText}'`);
   const refinedPrompt = `As an expert, provide a detailed answer for the following, including examples: '${promptText}' [REFINED]`;
   console.log(`Refined Prompt: '${refinedPrompt}'`);
-  console.log('--- Prompt Improvement Finished ---\n');
+  console.log('--- Prompt Improvement Finished ---\\n');
   return {
     originalPrompt: promptText,
     refinedPrompt
   };
 }
 
-function sanitizeErrorMessage(error) {
-  if (!error || !error.message) {
-    return 'An unexpected error occurred.';
-  }
-  return error.message;
-}
-
-function createServer() {
-  const app = express();
-  app.disable('x-powered-by');
-  app.use(helmet());
-  app.use(express.json({ limit: '1mb', strict: true }));
-
-  app.get('/health', (req, res) => {
-    res.json({ status: 'ok' });
-  });
-
-  app.post('/agents/preview', (req, res) => {
-    const { rolePath, prompt } = req.body || {};
-    if (typeof rolePath !== 'string' || rolePath.trim() === '') {
-      return res.status(400).json({ error: 'rolePath must be a non-empty string.' });
-    }
-
-    try {
-      const { originalPrompt, refinedPrompt } = improvePromptStub(prompt ?? '');
-      const agent = loadAgent(rolePath.trim());
-      res.json({
-        agent: {
-          name: agent.name,
-          description: agent.description,
-          persona: agent.persona,
-          rulesCount: agent.rules.length,
-          rules: agent.rules,
-          tools: agent.listTools()
-        },
-        prompts: {
-          original: originalPrompt,
-          refined: refinedPrompt
-        }
-      });
-    } catch (error) {
-      console.error('[ERROR] Failed to preview agent', error);
-      res.status(400).json({ error: sanitizeErrorMessage(error) });
-    }
-  });
-
-  app.post('/agents/tools/execute', (req, res) => {
-    const { rolePath, toolName, args } = req.body || {};
-
-    if (typeof rolePath !== 'string' || rolePath.trim() === '') {
-      return res.status(400).json({ error: 'rolePath must be a non-empty string.' });
-    }
-    if (typeof toolName !== 'string' || toolName.trim() === '') {
-      return res.status(400).json({ error: 'toolName must be a non-empty string.' });
-    }
-
-    try {
-      const agent = loadAgent(rolePath.trim());
-      const execution = agent.runTool(toolName.trim(), args);
-      if (!execution.success) {
-        return res.status(400).json({ error: execution.error });
-      }
-      res.json({ result: execution.result });
-    } catch (error) {
-      console.error('[ERROR] Failed to execute tool', error);
-      res.status(400).json({ error: sanitizeErrorMessage(error) });
-    }
-  });
-
-  app.use((req, res) => {
-    res.status(404).json({ error: 'Not Found' });
-  });
-
-  app.use((err, req, res, next) => {
-    console.error('[ERROR] Unexpected server error', err);
-    res.status(500).json({ error: 'Internal server error' });
-  });
-
-  return app;
-}
-
-if (require.main === module) {
-  const port = Number.parseInt(process.env.PORT, 10) || 3000;
-  const app = createServer();
-  app.listen(port, () => {
-    console.log(`🚀 Express server listening on port ${port}`);
-  });
-}
-
 module.exports = {
-  createServer,
-  loadAgent,
-  improvePromptStub,
-  Agent,
-  BASE_DATA_DIR
-};
+    loadAgent,
+    improvePromptStub
+}

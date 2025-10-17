@@ -2,7 +2,7 @@
 'use strict';
 
 const path = require('path');
-const { loadAgent, improvePromptStub } = require('../server');
+const { loadAgent, improvePromptStub } = require('../legacy_agent_logic');
 
 function main() {
   try {
