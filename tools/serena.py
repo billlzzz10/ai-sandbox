@@ -22,8 +22,10 @@ def _resolve_serena_command() -> str:
 def _normalise_args(args: Sequence[object] | None) -> List[str]:
     if args is None:
         return []
-    if isinstance(args, (str, bytes)):
+    if isinstance(args, (str, bytes, bytearray, memoryview)):
         raise SerenaError("Serena tool arguments must be provided as an iterable of values.")
+    if isinstance(args, dict):
+        raise SerenaError("Serena tool arguments must be provided as an iterable (not a mapping).")
     normalised: List[str] = []
     for value in args:
         if value is None:
