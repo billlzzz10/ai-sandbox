@@ -33,7 +33,7 @@ def _ensure_within_base(path: Path) -> Path:
     """Validate that *path* stays inside the repository boundary."""
 
     resolved = path.resolve()
-    if BASE_PATH not in resolved.parents and resolved != BASE_PATH:
+    if not resolved.is_relative_to(BASE_PATH):
         raise LoaderError(f"Access to '{path}' is outside of the repository root.")
     return resolved
 
