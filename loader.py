@@ -166,12 +166,22 @@ def _parse_scalar(value: str) -> Any:
         return value[1:-1]
     if value.startswith('"') and value.endswith('"'):
         return value[1:-1]
-    if value in {"true", "True"}:
+    lower = value.lower()
+    if lower == "true":
         return True
-    if value in {"false", "False"}:
+    if lower == "false":
         return False
-    if value in {"null", "Null", "~"}:
+    if lower in {"null", "~"}:
         return None
+    # attempt integer then float parsing
+    try:
+        return int(value)
+    except ValueError:
+        pass
+    try:
+        return float(value)
+    except ValueError:
+        pass
     # Try to parse as number
     try:
         if '.' in value:
