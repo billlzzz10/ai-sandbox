@@ -45,6 +45,7 @@ def _run_serena(subcommand: str, args: Sequence[object] | None = None) -> str:
             check=True,
             capture_output=True,
             text=True,
+            timeout=30,  # Prevent hanging processes
         )
     except FileNotFoundError as exc:  # pragma: no cover - surfaced via SerenaError
         raise SerenaError("The 'serena' executable could not be located.") from exc
