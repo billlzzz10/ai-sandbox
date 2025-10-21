@@ -1,0 +1,8 @@
+name: "insert_after_symbol"
+description: "แทรกโค้ดใหม่หลังจาก symbol ที่กำหนดด้วย Serena CLI"
+execution_policy:
+  default_mode: "sync"
+  allowed_modes:
+    - "sync"
+execution_environment:
+  type: "cli"

@@ -1,0 +1,8 @@
+name: "find_symbol"
+description: "ค้นหา symbol ภายใน codebase โดยใช้ Serena CLI"
+execution_policy:
+  default_mode: "sync"
+  allowed_modes:
+    - "sync"
+execution_environment:
+  type: "cli"
