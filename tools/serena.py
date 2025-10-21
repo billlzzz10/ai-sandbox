@@ -52,6 +52,8 @@ def _run_serena(subcommand: str, args: Sequence[object] | None = None) -> str:
     except subprocess.CalledProcessError as exc:
         stderr = (exc.stderr or "").strip()
         raise SerenaError(f"Serena command failed: {stderr or exc}") from exc
+    except subprocess.TimeoutExpired as exc:
+        raise SerenaError(f"Serena command timed out after 30 seconds: {' '.join(command)}") from exc
 
     return completed.stdout
 
