@@ -172,6 +172,13 @@ def _parse_scalar(value: str) -> Any:
         return False
     if value in {"null", "Null", "~"}:
         return None
+    # Try to parse as number
+    try:
+        if '.' in value:
+            return float(value)
+        return int(value)
+    except ValueError:
+        pass
     return value
 
 def load_agent(agent_name: str) -> Dict[str, Any]:
