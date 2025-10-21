@@ -18,8 +18,9 @@ TOOL_MAP: Dict[str, ToolFunction] = {
 
 def available_tools() -> Mapping[str, ToolFunction]:
     """Return a read-only view of the registered tools."""
+    from types import MappingProxyType
 
-    return TOOL_MAP.copy()
+    return MappingProxyType(TOOL_MAP)
 
 
 __all__ = ["TOOL_MAP", "available_tools", "ToolFunction"]
