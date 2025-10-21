@@ -194,7 +194,7 @@ def load_agent(agent_name: str) -> Dict[str, Any]:
     return _load_yaml(role_file)
 
 
-def _iter_tool_candidates(tool_name: str) -> list[Path]:
+def _iter_tool_candidates(tool_name: str) -> List[Path]:
     """Return all matching ``tool/**/*.yaml`` paths for *tool_name*."""
 
     tools_root = _ensure_within_base(BASE_PATH / "tool")
