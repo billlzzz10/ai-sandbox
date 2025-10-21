@@ -48,12 +48,17 @@ def _run_serena(subcommand: str, args: Sequence[object] | None = None) -> str:
             capture_output=True,
             text=True,
             timeout=30,  # Prevent hanging processes
+            timeout=30,
         )
     except FileNotFoundError as exc:  # pragma: no cover - surfaced via SerenaError
         raise SerenaError("The 'serena' executable could not be located.") from exc
+    except subprocess.TimeoutExpired as exc:
+        raise SerenaError(f"Serena command timed out after {exc.timeout} seconds: {exc}") from exc
     except subprocess.CalledProcessError as exc:
         stderr = (exc.stderr or "").strip()
-        raise SerenaError(f"Serena command failed: {stderr or exc}") from exc
+        stdout = (exc.stdout or "").strip()
+        details = " | ".join(part for part in (stderr, stdout) if part) or str(exc)
+        raise SerenaError(f"Serena command failed: {details}") from exc
     except subprocess.TimeoutExpired as exc:
         raise SerenaError(f"Serena command timed out after 30 seconds: {' '.join(command)}") from exc
 
