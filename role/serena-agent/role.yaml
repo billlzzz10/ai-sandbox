@@ -1,0 +1,11 @@
+name: "serena-agent"
+version: "1.0.0"
+description: "Agent ที่ใช้ Serena สำหรับ semantic code editing"
+imports:
+  prompts:
+    - "../../prompt/serena/serena_agent_prompt.yaml"
+  rules:
+    - "../../rule/serena/serena_rules.md"
+  tools:
+    - "../../tool/serena/find_symbol.yaml"
+    - "../../tool/serena/insert_after_symbol.yaml"
