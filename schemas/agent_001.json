@@ -1,0 +1,174 @@
+[
+  {
+    "Agent_Profile": "AI_Systems_Architect",
+    "Agent_ID": "ASA-001",
+    "Track": "Builder",
+    "Skills": [
+      {
+        "Skill_Name": "Architecture_Blueprint_Generator (เครื่องมือสร้างพิมพ์เขียวสถาปัตยกรรม)",
+        "Skill_ID": "ASA-001-T1",
+        "Parameters": [
+          {
+            "Param_Name": "requirements (ข้อกำหนด)",
+            "Data_Type": "Text",
+            "Scope_Format": "\"A microservices system for e-commerce\"",
+            "Description": "ใส่ข้อกำหนดทางธุรกิจหรือฟังก์ชันที่ระบบต้องทำได้"
+          },
+          {
+            "Param_Name": "constraints (ข้อจำกัด)",
+            "Data_Type": "Text",
+            "Scope_Format": "\"Budget < $5k/month, Must use AWS\"",
+            "Description": "ใส่ข้อจำกัดต่างๆ เช่น งบประมาณ, เทคโนโลยีที่บังคับใช้"
+          },
+          {
+            "Param_Name": "scale_metrics (ตัวชี้วัดการขยายตัว)",
+            "Data_Type": "Text",
+            "Scope_Format": "\"1000 rps, 1M users, 1TB data\"",
+            "Description": "ใส่ตัวเลขที่คาดการณ์ไว้เพื่อประเมินการขยายตัวของระบบ"
+          },
+          {
+            "Param_Name": "architecture_diagram (แผนภาพสถาปัตยกรรม)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .svg, .png, .md",
+            "Description": "ผลลัพธ์ที่ได้จะเป็นไฟล์แผนภาพของสถาปัตยกรรมระบบ"
+          },
+          {
+            "Param_Name": "component_specs (รายละเอียดส่วนประกอบ)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .md, .json",
+            "Description": "ผลลัพธ์ที่ได้จะเป็นไฟล์เอกสารที่อธิบายรายละเอียดของแต่ละส่วนประกอบ"
+          },
+          {
+            "Param_Name": "integration_points (จุดเชื่อมต่อ)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .json (OpenAPI Spec)",
+            "Description": "ผลลัพธ์ที่ได้จะเป็นไฟล์ที่ระบุจุดเชื่อมต่อและข้อกำหนดของ API"
+          },
+          {
+            "Param_Name": "Design_Pattern_Selection (การเลือกรูปแบบสถาปัตยกรรม)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Microservices, Serverless, Monolith]",
+            "Description": "เลือกรูปแบบสถาปัตยกรรมหลักที่ต้องการใช้ในการออกแบบ"
+          },
+          {
+            "Param_Name": "Dependency_Mapping (การสร้างแผนผังการพึ่งพา)",
+            "Data_Type": "Boolean",
+            "Scope_Format": "[True, False]",
+            "Description": "เลือกว่าจะให้ระบบสร้างแผนผังแสดงการพึ่งพากันของบริการหรือไม่"
+          },
+          {
+            "Param_Name": "Bottleneck_Identification (การระบุคอขวด)",
+            "Data_Type": "Boolean",
+            "Scope_Format": "[True, False]",
+            "Description": "เลือกว่าจะให้ระบบวิเคราะห์และระบุจุดที่อาจเป็นคอขวดของระบบหรือไม่"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Model_Orchestration_Engine (เครื่องมือควบคุมการทำงานโมเดล)",
+        "Skill_ID": "ASA-001-T2",
+        "Parameters": [
+          {
+            "Param_Name": "model_specs (รายละเอียดโมเดล)",
+            "Data_Type": "Text",
+            "Scope_Format": "\"BERT-base, ResNet50\"",
+            "Description": "ใส่ชื่อหรือรายละเอียดของโมเดล AI ที่จะนำมาใช้งาน"
+          },
+          {
+            "Param_Name": "performance_criteria (เกณฑ์วัดประสิทธิภาพ)",
+            "Data_Type": "Text",
+            "Scope_Format": "\"Accuracy > 95%, Latency < 200ms\"",
+            "Description": "ใส่เกณฑ์ที่ต้องการใช้วัดประสิทธิภาพของโมเดล"
+          },
+          {
+            "Param_Name": "latency_requirements (เวลาตอบสนองที่ต้องการ)",
+            "Data_Type": "Number",
+            "Scope_Format": "Range: 1-1000, Unit: ms",
+            "Description": "กำหนดเวลาตอบสนองสูงสุดที่ยอมรับได้ (หน่วยเป็นมิลลิวินาที)"
+          },
+          {
+            "Param_Name": "orchestration_yaml (ไฟล์ควบคุมการทำงานโมเดล)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .yaml",
+            "Description": "ไฟล์สำหรับควบคุมการทำงานของโมเดล"
+          },
+          {
+            "Param_Name": "routing_rules (กฎการส่งต่อ)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .json",
+            "Description": "กฎการส่งต่อ request ไปยังโมเดลต่างๆ"
+          },
+          {
+            "Param_Name": "failover_config (การตั้งค่าระบบสำรอง)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .json",
+            "Description": "การตั้งค่าระบบสำรองเมื่อโมเดลหลักล้มเหลว"
+          },
+          {
+            "Param_Name": "Load_Balancing_Strategy (กลยุทธ์การกระจายโหลด)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Round Robin, Least Connections, IP Hash]",
+            "Description": "เลือกกลยุทธ์ที่จะใช้ในการกระจายการร้องขอไปยังโมเดลต่างๆ"
+          },
+          {
+            "Param_Name": "A_B_Testing_Framework (กรอบการทดสอบ A/B)",
+            "Data_Type": "Boolean",
+            "Scope_Format": "[True, False]",
+            "Description": "เลือกว่าจะเปิดใช้งานกรอบการทดสอบ A/B หรือไม่"
+          },
+          {
+            "Param_Name": "Performance_Benchmarking (การวัดประสิทธิภาพเปรียบเทียบ)",
+            "Data_Type": "Boolean",
+            "Scope_Format": "[True, False]",
+            "Description": "เลือกว่าจะเปิดใช้งานการวัดประสิทธิภาพเพื่อเปรียบเทียบหรือไม่"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Scalability_Assessment_Suite (ชุดเครื่องมือประเมินการขยายระบบ)",
+        "Skill_ID": "ASA-001-T3",
+        "Parameters": [
+          {
+            "Param_Name": "load_test_scenario (สถานการณ์ทดสอบโหลด)",
+            "Data_Type": "Text",
+            "Scope_Format": "\"Simulate 1000 concurrent users for 5 minutes\"",
+            "Description": "รายละเอียดสถานการณ์การทดสอบโหลด"
+          },
+          {
+            "Param_Name": "target_latency (เวลาแฝงเป้าหมาย)",
+            "Data_Type": "Number",
+            "Scope_Format": "Unit: ms",
+            "Description": "เวลาแฝงสูงสุดที่ยอมรับได้"
+          },
+          {
+            "Param_Name": "test_report_format (รูปแบบรายงานทดสอบ)",
+            "Data_Type": "Select",
+            "Scope_Format": "[.pdf, .html, .json]",
+            "Description": "รูปแบบไฟล์สำหรับรายงานผลการทดสอบ"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Integration_Validator (เครื่องมือตรวจสอบการเชื่อมต่อ)",
+        "Skill_ID": "ASA-001-T4",
+        "Parameters": [
+          {
+            "Param_Name": "api_endpoint (ปลายทาง API)",
+            "Data_Type": "Text",
+            "Scope_Format": "URL of the API endpoint",
+            "Description": "URL ของ API ที่ต้องการตรวจสอบ"
+          },
+          {
+            "Param_Name": "expected_response (การตอบสนองที่คาดหวัง)",
+            "Data_Type": "Text",
+            "Scope_Format": "JSON or XML structure",
+            "Description": "โครงสร้างการตอบสนองที่คาดหวังจาก API"
+          },
+          {
+            "Param_Name": "validation_schema (Schema การตรวจสอบ)",
+            "Data_Type": "File",
+            "Scope_Format": "JSON Schema file (.json)",
+            "Description": "ไฟล์ JSON Schema สำหรับตรวจสอบความถูกต้องของข้อมูล
+           }
+     {
+]
