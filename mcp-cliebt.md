@@ -49,7 +49,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
     touch client.py
     ```
 
-    ## Setting Up Your API Key
+## Setting Up Your API Key
 
     You'll need an Anthropic API key from the [Anthropic Console](https://console.anthropic.com/settings/keys).
 
@@ -60,13 +60,13 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
     touch .env
     ```
 
-    Add your key to the `.env` file:
+Add your key to the `.env` file:
 
     ```bash
     ANTHROPIC_API_KEY=<your key here>
     ```
 
-    Add `.env` to your `.gitignore`:
+Add `.env` to your `.gitignore`:
 
     ```bash
     echo ".env" >> .gitignore
@@ -76,9 +76,9 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
       Make sure you keep your `ANTHROPIC_API_KEY` secure!
     </Warning>
 
-    ## Creating the Client
+## Creating the Client
 
-    ### Basic Client Structure
+### Basic Client Structure
 
     First, let's set up our imports and create the basic client class:
 
@@ -104,7 +104,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
         # methods will go here
     ```
 
-    ### Server Connection Management
+### Server Connection Management
 
     Next, we'll implement the method to connect to an MCP server:
 
