@@ -1,0 +1,1015 @@
+[
+  {
+    "Agent_Profile": "AI_Systems_Architect",
+    "Agent_ID": "ASA-001",
+    "Track": "Builder",
+    "Skills": [
+      {
+        "Skill_Name": "Architecture_Blueprint_Generator (เครื่องมือสร้างพิมพ์เขียวสถาปัตยกรรม)",
+        "Skill_ID": "ASA-001-T1",
+        "Parameters": [
+          {
+            "Param_Name": "requirements (ข้อกำหนด)",
+            "Data_Type": "Text",
+            "Scope_Format": "\"A microservices system for e-commerce\"",
+            "Description": "ใส่ข้อกำหนดทางธุรกิจหรือฟังก์ชันที่ระบบต้องทำได้"
+          },
+          {
+            "Param_Name": "constraints (ข้อจำกัด)",
+            "Data_Type": "Text",
+            "Scope_Format": "\"Budget < $5k/month, Must use AWS\"",
+            "Description": "ใส่ข้อจำกัดต่างๆ เช่น งบประมาณ, เทคโนโลยีที่บังคับใช้"
+          },
+          {
+            "Param_Name": "scale_metrics (ตัวชี้วัดการขยายตัว)",
+            "Data_Type": "Text",
+            "Scope_Format": "\"1000 rps, 1M users, 1TB data\"",
+            "Description": "ใส่ตัวเลขที่คาดการณ์ไว้เพื่อประเมินการขยายตัวของระบบ"
+          },
+          {
+            "Param_Name": "architecture_diagram (แผนภาพสถาปัตยกรรม)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .svg, .png, .md",
+            "Description": "ผลลัพธ์ที่ได้จะเป็นไฟล์แผนภาพของสถาปัตยกรรมระบบ"
+          },
+          {
+            "Param_Name": "component_specs (รายละเอียดส่วนประกอบ)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .md, .json",
+            "Description": "ผลลัพธ์ที่ได้จะเป็นไฟล์เอกสารที่อธิบายรายละเอียดของแต่ละส่วนประกอบ"
+          },
+          {
+            "Param_Name": "integration_points (จุดเชื่อมต่อ)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .json (OpenAPI Spec)",
+            "Description": "ผลลัพธ์ที่ได้จะเป็นไฟล์ที่ระบุจุดเชื่อมต่อและข้อกำหนดของ API"
+          },
+          {
+            "Param_Name": "Design_Pattern_Selection (การเลือกรูปแบบสถาปัตยกรรม)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Microservices, Serverless, Monolith]",
+            "Description": "เลือกรูปแบบสถาปัตยกรรมหลักที่ต้องการใช้ในการออกแบบ"
+          },
+          {
+            "Param_Name": "Dependency_Mapping (การสร้างแผนผังการพึ่งพา)",
+            "Data_Type": "Boolean",
+            "Scope_Format": "[True, False]",
+            "Description": "เลือกว่าจะให้ระบบสร้างแผนผังแสดงการพึ่งพากันของบริการหรือไม่"
+          },
+          {
+            "Param_Name": "Bottleneck_Identification (การระบุคอขวด)",
+            "Data_Type": "Boolean",
+            "Scope_Format": "[True, False]",
+            "Description": "เลือกว่าจะให้ระบบวิเคราะห์และระบุจุดที่อาจเป็นคอขวดของระบบหรือไม่"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Model_Orchestration_Engine (เครื่องมือควบคุมการทำงานโมเดล)",
+        "Skill_ID": "ASA-001-T2",
+        "Parameters": [
+          {
+            "Param_Name": "model_specs (รายละเอียดโมเดล)",
+            "Data_Type": "Text",
+            "Scope_Format": "\"BERT-base, ResNet50\"",
+            "Description": "ใส่ชื่อหรือรายละเอียดของโมเดล AI ที่จะนำมาใช้งาน"
+          },
+          {
+            "Param_Name": "performance_criteria (เกณฑ์วัดประสิทธิภาพ)",
+            "Data_Type": "Text",
+            "Scope_Format": "\"Accuracy > 95%, Latency < 200ms\"",
+            "Description": "ใส่เกณฑ์ที่ต้องการใช้วัดประสิทธิภาพของโมเดล"
+          },
+          {
+            "Param_Name": "latency_requirements (เวลาตอบสนองที่ต้องการ)",
+            "Data_Type": "Number",
+            "Scope_Format": "Range: 1-1000, Unit: ms",
+            "Description": "กำหนดเวลาตอบสนองสูงสุดที่ยอมรับได้ (หน่วยเป็นมิลลิวินาที)"
+          },
+          {
+            "Param_Name": "orchestration_yaml (ไฟล์ควบคุมการทำงานโมเดล)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .yaml",
+            "Description": "ไฟล์สำหรับควบคุมการทำงานของโมเดล"
+          },
+          {
+            "Param_Name": "routing_rules (กฎการส่งต่อ)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .json",
+            "Description": "กฎการส่งต่อ request ไปยังโมเดลต่างๆ"
+          },
+          {
+            "Param_Name": "failover_config (การตั้งค่าระบบสำรอง)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .json",
+            "Description": "การตั้งค่าระบบสำรองเมื่อโมเดลหลักล้มเหลว"
+          },
+          {
+            "Param_Name": "Load_Balancing_Strategy (กลยุทธ์การกระจายโหลด)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Round Robin, Least Connections, IP Hash]",
+            "Description": "เลือกกลยุทธ์ที่จะใช้ในการกระจายการร้องขอไปยังโมเดลต่างๆ"
+          },
+          {
+            "Param_Name": "A_B_Testing_Framework (กรอบการทดสอบ A/B)",
+            "Data_Type": "Boolean",
+            "Scope_Format": "[True, False]",
+            "Description": "เลือกว่าจะเปิดใช้งานกรอบการทดสอบ A/B หรือไม่"
+          },
+          {
+            "Param_Name": "Performance_Benchmarking (การวัดประสิทธิภาพเปรียบเทียบ)",
+            "Data_Type": "Boolean",
+            "Scope_Format": "[True, False]",
+            "Description": "เลือกว่าจะเปิดใช้งานการวัดประสิทธิภาพเพื่อเปรียบเทียบหรือไม่"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Scalability_Assessment_Suite (ชุดเครื่องมือประเมินการขยายระบบ)",
+        "Skill_ID": "ASA-001-T3",
+        "Parameters": [
+          {
+            "Param_Name": "load_test_scenario (สถานการณ์ทดสอบโหลด)",
+            "Data_Type": "Text",
+            "Scope_Format": "\"Simulate 1000 concurrent users for 5 minutes\"",
+            "Description": "รายละเอียดสถานการณ์การทดสอบโหลด"
+          },
+          {
+            "Param_Name": "target_latency (เวลาแฝงเป้าหมาย)",
+            "Data_Type": "Number",
+            "Scope_Format": "Unit: ms",
+            "Description": "เวลาแฝงสูงสุดที่ยอมรับได้"
+          },
+          {
+            "Param_Name": "test_report_format (รูปแบบรายงานทดสอบ)",
+            "Data_Type": "Select",
+            "Scope_Format": "[.pdf, .html, .json]",
+            "Description": "รูปแบบไฟล์สำหรับรายงานผลการทดสอบ"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Integration_Validator (เครื่องมือตรวจสอบการเชื่อมต่อ)",
+        "Skill_ID": "ASA-001-T4",
+        "Parameters": [
+          {
+            "Param_Name": "api_endpoint (ปลายทาง API)",
+            "Data_Type": "Text",
+            "Scope_Format": "URL of the API endpoint",
+            "Description": "URL ของ API ที่ต้องการตรวจสอบ"
+          },
+          {
+            "Param_Name": "expected_response (การตอบสนองที่คาดหวัง)",
+            "Data_Type": "Text",
+            "Scope_Format": "JSON or XML structure",
+            "Description": "โครงสร้างการตอบสนองที่คาดหวังจาก API"
+          },
+          {
+            "Param_Name": "validation_schema (Schema การตรวจสอบ)",
+            "Data_Type": "File",
+            "Scope_Format": "JSON Schema file (.json)",
+            "Description": "ไฟล์ JSON Schema สำหรับตรวจสอบความถูกต้องของข้อมูล"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Agent_Profile": "Full_Stack_Engineer",
+    "Agent_ID": "FSE-002",
+    "Track": "Builder",
+    "Skills": [
+      {
+        "Skill_Name": "Full_Stack_Code_Generator (เครื่องมือสร้างโค้ด Full-Stack)",
+        "Skill_ID": "FSE-002-T1",
+        "Parameters": [
+          {
+            "Param_Name": "project_type (ประเภทโปรเจกต์)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Web Application, Mobile Application, API Service]",
+            "Description": "เลือกประเภทของโปรเจกต์ที่ต้องการสร้าง"
+          },
+          {
+            "Param_Name": "frontend_framework (เฟรมเวิร์ก Frontend)",
+            "Data_Type": "Select",
+            "Scope_Format": "[React, Vue, Angular, Svelte]",
+            "Description": "เลือกเฟรมเวิร์กสำหรับส่วน Frontend"
+          },
+          {
+            "Param_Name": "backend_framework (เฟรมเวิร์ก Backend)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Node.js (Express), Python (Django/Flask), Go (Gin)]",
+            "Description": "เลือกเฟรมเวิร์กสำหรับส่วน Backend"
+          },
+          {
+            "Param_Name": "database_type (ประเภทฐานข้อมูล)",
+            "Data_Type": "Select",
+            "Scope_Format": "[PostgreSQL, MongoDB, MySQL, SQLite]",
+            "Description": "เลือกประเภทของฐานข้อมูลที่ต้องการใช้"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Database_Optimizer (เครื่องมือปรับแต่งฐานข้อมูล)",
+        "Skill_ID": "FSE-002-T2",
+        "Parameters": [
+          {
+            "Param_Name": "database_connection_string (สตริงเชื่อมต่อฐานข้อมูล)",
+            "Data_Type": "Text",
+            "Scope_Format": "Standard database connection string",
+            "Description": "สตริงสำหรับเชื่อมต่อกับฐานข้อมูล"
+          },
+          {
+            "Param_Name": "optimization_strategy (กลยุทธ์การปรับแต่ง)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Index Optimization, Query Refactoring, Schema Normalization]",
+            "Description": "เลือกกลยุทธ์ในการปรับแต่งฐานข้อมูล"
+          },
+          {
+            "Param_Name": "report_format (รูปแบบรายงาน)",
+            "Data_Type": "Select",
+            "Scope_Format": "[.pdf, .html]",
+            "Description": "รูปแบบของรายงานผลการปรับแต่ง"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Frontend_Performance_Engineer (วิศวกรประสิทธิภาพ Frontend)",
+        "Skill_ID": "FSE-002-T3",
+        "Parameters": [
+          {
+            "Param_Name": "website_url (URL เว็บไซต์)",
+            "Data_Type": "Text",
+            "Scope_Format": "URL of the website to analyze",
+            "Description": "URL ของเว็บไซต์ที่ต้องการวิเคราะห์ประสิทธิภาพ"
+          },
+          {
+            "Param_Name": "optimization_techniques (เทคนิคการปรับแต่ง)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[Image Optimization, Code Splitting, Lazy Loading, CDN]",
+            "Description": "เลือกเทคนิคการปรับแต่งที่ต้องการใช้"
+          },
+          {
+            "Param_Name": "performance_report (รายงานประสิทธิภาพ)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .pdf, .json",
+            "Description": "รายงานผลการวิเคราะห์และปรับแต่งประสิทธิภาพ Frontend"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "API_Contract_Designer (ผู้ออกแบบสัญญา API)",
+        "Skill_ID": "FSE-002-T4",
+        "Parameters": [
+          {
+            "Param_Name": "api_spec_type (ประเภทของ API Spec)",
+            "Data_Type": "Select",
+            "Scope_Format": "[OpenAPI (Swagger), GraphQL Schema]",
+            "Description": "เลือกประเภทของข้อกำหนด API"
+          },
+          {
+            "Param_Name": "endpoints_description (คำอธิบาย Endpoints)",
+            "Data_Type": "Text",
+            "Scope_Format": "Description of API endpoints and their functionalities",
+            "Description": "คำอธิบายของแต่ละ API endpoint และฟังก์ชันการทำงาน"
+          },
+          {
+            "Param_Name": "output_format (รูปแบบผลลัพธ์)",
+            "Data_Type": "Select",
+            "Scope_Format": "[.yaml, .json]",
+            "Description": "รูปแบบไฟล์สำหรับผลลัพธ์ของ API Contract"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Agent_Profile": "DevOps_Infrastructure_Specialist",
+    "Agent_ID": "DIS-003",
+    "Track": "Builder",
+    "Skills": [
+      {
+        "Skill_Name": "Infrastructure_Provisioner (ผู้จัดเตรียมโครงสร้างพื้นฐาน)",
+        "Skill_ID": "DIS-003-T1",
+        "Parameters": [
+          {
+            "Param_Name": "cloud_provider (ผู้ให้บริการคลาวด์)",
+            "Data_Type": "Select",
+            "Scope_Format": "[AWS, Azure, GCP]",
+            "Description": "เลือกผู้ให้บริการคลาวด์"
+          },
+          {
+            "Param_Name": "resource_type (ประเภททรัพยากร)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[EC2, S3, RDS, Lambda, Kubernetes]",
+            "Description": "เลือกประเภทของทรัพยากรที่ต้องการจัดเตรียม"
+          },
+          {
+            "Param_Name": "region (ภูมิภาค)",
+            "Data_Type": "Text",
+            "Scope_Format": "e.g., us-east-1, ap-southeast-1",
+            "Description": "ภูมิภาคที่ต้องการจัดเตรียมทรัพยากร"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "CI_CD_Pipeline_Architect (สถาปนิก CI/CD Pipeline)",
+        "Skill_ID": "DIS-003-T2",
+        "Parameters": [
+          {
+            "Param_Name": "source_control_repo (Repository ควบคุมเวอร์ชัน)",
+            "Data_Type": "Text",
+            "Scope_Format": "URL of Git repository",
+            "Description": "URL ของ Git repository"
+          },
+          {
+            "Param_Name": "ci_cd_tool (เครื่องมือ CI/CD)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Jenkins, GitLab CI, GitHub Actions, CircleCI]",
+            "Description": "เลือกเครื่องมือ CI/CD ที่ต้องการใช้"
+          },
+          {
+            "Param_Name": "deployment_strategy (กลยุทธ์การ Deploy)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Blue/Green, Canary, Rolling Update]",
+            "Description": "เลือกกลยุทธ์ในการ Deploy"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Observability_Stack_Designer (ผู้ออกแบบ Observability Stack)",
+        "Skill_ID": "DIS-003-T3",
+        "Parameters": [
+          {
+            "Param_Name": "logging_solution (โซลูชัน Log)",
+            "Data_Type": "Select",
+            "Scope_Format": "[ELK Stack, Grafana Loki, Splunk]",
+            "Description": "เลือกโซลูชันสำหรับการเก็บ Log"
+          },
+          {
+            "Param_Name": "monitoring_solution (โซลูชัน Monitoring)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Prometheus, Datadog, New Relic]",
+            "Description": "เลือกโซลูชันสำหรับการ Monitoring"
+          },
+          {
+            "Param_Name": "alerting_channels (ช่องทางการแจ้งเตือน)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[Slack, Email, PagerDuty, SMS]",
+            "Description": "เลือกช่องทางในการแจ้งเตือน"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Disaster_Recovery_Planner (ผู้วางแผน Disaster Recovery)",
+        "Skill_ID": "DIS-003-T4",
+        "Parameters": [
+          {
+            "Param_Name": "rto_rpo_targets (เป้าหมาย RTO/RPO)",
+            "Data_Type": "Text",
+            "Scope_Format": "e.g., RTO: 4 hours, RPO: 1 hour",
+            "Description": "เป้าหมาย Recovery Time Objective (RTO) และ Recovery Point Objective (RPO)"
+          },
+          {
+            "Param_Name": "backup_strategy (กลยุทธ์การสำรองข้อมูล)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Full Backup, Incremental Backup, Differential Backup]",
+            "Description": "เลือกกลยุทธ์ในการสำรองข้อมูล"
+          },
+          {
+            "Param_Name": "recovery_plan_document (เอกสารแผนกู้คืน)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .pdf, .md",
+            "Description": "เอกสารแผนการกู้คืนระบบ"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Agent_Profile": "Security_Engineer",
+    "Agent_ID": "SEG-004",
+    "Track": "Builder",
+    "Skills": [
+      {
+        "Skill_Name": "Threat_Model_Generator (เครื่องมือสร้างแบบจำลองภัยคุกคาม)",
+        "Skill_ID": "SEG-004-T1",
+        "Parameters": [
+          {
+            "Param_Name": "system_description (คำอธิบายระบบ)",
+            "Data_Type": "Text",
+            "Scope_Format": "Brief description of the system architecture and components",
+            "Description": "คำอธิบายสถาปัตยกรรมและส่วนประกอบของระบบ"
+          },
+          {
+            "Param_Name": "threat_categorization (การจัดหมวดหมู่ภัยคุกคาม)",
+            "Data_Type": "Select",
+            "Scope_Format": "[STRIDE, DREAD]",
+            "Description": "เลือกวิธีการจัดหมวดหมู่ภัยคุกคาม"
+          },
+          {
+            "Param_Name": "output_format (รูปแบบผลลัพธ์)",
+            "Data_Type": "Select",
+            "Scope_Format": "[.pdf, .json]",
+            "Description": "รูปแบบไฟล์สำหรับผลลัพธ์ของ Threat Model"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Security_Policy_Framework_Builder (ผู้สร้างกรอบนโยบายความปลอดภัย)",
+        "Skill_ID": "SEG-004-T2",
+        "Parameters": [
+          {
+            "Param_Name": "policy_scope (ขอบเขตของนโยบาย)",
+            "Data_Type": "Text",
+            "Scope_Format": "e.g., \'Data Handling\', \'Access Control\', \'Incident Response\'",
+            "Description": "ขอบเขตของนโยบายความปลอดภัยที่ต้องการสร้าง"
+          },
+          {
+            "Param_Name": "compliance_standards (มาตรฐานการปฏิบัติตาม)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[ISO 27001, GDPR, HIPAA, PCI DSS]",
+            "Description": "เลือกมาตรฐานการปฏิบัติตามที่เกี่ยวข้อง"
+          },
+          {
+            "Param_Name": "policy_document_format (รูปแบบเอกสารนโยบาย)",
+            "Data_Type": "Select",
+            "Scope_Format": "[.pdf, .md]",
+            "Description": "รูปแบบไฟล์สำหรับเอกสารนโยบาย"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Secure_Code_Auditor (ผู้ตรวจสอบโค้ดเพื่อความปลอดภัย)",
+        "Skill_ID": "SEG-004-T3",
+        "Parameters": [
+          {
+            "Param_Name": "code_repository_url (URL ของ Code Repository)",
+            "Data_Type": "Text",
+            "Scope_Format": "URL of the code repository to audit",
+            "Description": "URL ของ Code Repository ที่ต้องการตรวจสอบ"
+          },
+          {
+            "Param_Name": "language (ภาษาโปรแกรม)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Python, Java, JavaScript, Go, C#]",
+            "Description": "ภาษาโปรแกรมที่ใช้ใน Repository"
+          },
+          {
+            "Param_Name": "security_scan_tool (เครื่องมือสแกนความปลอดภัย)",
+            "Data_Type": "Select",
+            "Scope_Format": "[SAST, DAST, SCA]",
+            "Description": "เลือกประเภทของเครื่องมือสแกนความปลอดภัย"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Compliance_Automation_Engine (เครื่องมือ Automate การปฏิบัติตามข้อกำหนด)",
+        "Skill_ID": "SEG-004-T4",
+        "Parameters": [
+          {
+            "Param_Name": "compliance_framework (กรอบการปฏิบัติตาม)",
+            "Data_Type": "Select",
+            "Scope_Format": "[NIST, CIS, SOC 2]",
+            "Description": "เลือกกรอบการปฏิบัติตามข้อกำหนด"
+          },
+          {
+            "Param_Name": "audit_scope (ขอบเขตการตรวจสอบ)",
+            "Data_Type": "Text",
+            "Scope_Format": "Description of systems or processes to be audited",
+            "Description": "คำอธิบายขอบเขตของระบบหรือกระบวนการที่จะตรวจสอบ"
+          },
+          {
+            "Param_Name": "automation_script (Script สำหรับ Automate)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .py, .sh",
+            "Description": "Script สำหรับ Automate การตรวจสอบการปฏิบัติตามข้อกำหนด"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Agent_Profile": "Product_Designer_UX_UI",
+    "Agent_ID": "PDG-005",
+    "Track": "Creative",
+    "Skills": [
+      {
+        "Skill_Name": "User_Research_Synthesizer (เครื่องมือสรุปผลการวิจัยผู้ใช้)",
+        "Skill_ID": "PDG-005-T1",
+        "Parameters": [
+          {
+            "Param_Name": "research_data_source (แหล่งข้อมูลวิจัย)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[Interviews, Surveys, Usability Tests, Analytics]",
+            "Description": "เลือกแหล่งข้อมูลการวิจัยผู้ใช้"
+          },
+          {
+            "Param_Name": "synthesis_method (วิธีการสังเคราะห์)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Affinity Mapping, Persona Creation, Journey Mapping]",
+            "Description": "เลือกวิธีการสังเคราะห์ข้อมูล"
+          },
+          {
+            "Param_Name": "report_format (รูปแบบรายงาน)",
+            "Data_Type": "Select",
+            "Scope_Format": "[.pdf, .md]",
+            "Description": "รูปแบบไฟล์สำหรับรายงานผลการสังเคราะห์"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Interaction_Architect (สถาปนิกปฏิสัมพันธ์)",
+        "Skill_ID": "PDG-005-T2",
+        "Parameters": [
+          {
+            "Param_Name": "user_flow_description (คำอธิบาย User Flow)",
+            "Data_Type": "Text",
+            "Scope_Format": "Description of key user tasks and their steps",
+            "Description": "คำอธิบายขั้นตอนการทำงานหลักของผู้ใช้"
+          },
+          {
+            "Param_Name": "interaction_patterns (รูปแบบการปฏิสัมพันธ์)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[Forms, Navigation, Data Display, Feedback]",
+            "Description": "เลือกรูปแบบการปฏิสัมพันธ์ที่ต้องการออกแบบ"
+          },
+          {
+            "Param_Name": "wireframe_output_format (รูปแบบ Wireframe)",
+            "Data_Type": "Select",
+            "Scope_Format": "[.png, .svg, .figma_link]",
+            "Description": "รูปแบบไฟล์สำหรับ Wireframe"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Design_System_Generator (เครื่องมือสร้าง Design System)",
+        "Skill_ID": "PDG-005-T3",
+        "Parameters": [
+          {
+            "Param_Name": "brand_guidelines (แนวทางแบรนด์)",
+            "Data_Type": "File",
+            "Scope_Format": "PDF or image files of brand guidelines",
+            "Description": "ไฟล์แนวทางแบรนด์ (สี, ฟอนต์, โลโก้)"
+          },
+          {
+            "Param_Name": "component_library_scope (ขอบเขต Component Library)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[Buttons, Inputs, Navigation, Cards, Modals]",
+            "Description": "เลือกประเภทของ Component ที่ต้องการสร้างใน Library"
+          },
+          {
+            "Param_Name": "design_system_output (ผลลัพธ์ Design System)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: Figma file, Storybook link, HTML/CSS components",
+            "Description": "ผลลัพธ์ของ Design System (เช่น ไฟล์ Figma, ลิงก์ Storybook)"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "User_Testing_Conductor (ผู้ดำเนินการทดสอบผู้ใช้)",
+        "Skill_ID": "PDG-005-T4",
+        "Parameters": [
+          {
+            "Param_Name": "prototype_url (URL ของ Prototype)",
+            "Data_Type": "Text",
+            "Scope_Format": "URL of the prototype to be tested",
+            "Description": "URL ของ Prototype ที่ต้องการทดสอบ"
+          },
+          {
+            "Param_Name": "test_objectives (วัตถุประสงค์การทดสอบ)",
+            "Data_Type": "Text",
+            "Scope_Format": "e.g., \'Assess ease of navigation\', \'Identify pain points\'",
+            "Description": "วัตถุประสงค์หลักของการทดสอบผู้ใช้"
+          },
+          {
+            "Param_Name": "user_feedback_report (รายงานผลตอบรับผู้ใช้)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .pdf, .md, .video_summary",
+            "Description": "รายงานสรุปผลตอบรับจากการทดสอบผู้ใช้"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Agent_Profile": "Content_Strategist",
+    "Agent_ID": "CST-006",
+    "Track": "Creative",
+    "Skills": [
+      {
+        "Skill_Name": "Audience_Insight_Engine (เครื่องมือวิเคราะห์ข้อมูลเชิงลึกกลุ่มเป้าหมาย)",
+        "Skill_ID": "CST-006-T1",
+        "Parameters": [
+          {
+            "Param_Name": "research_data_source (แหล่งข้อมูลวิจัย)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[Interviews, Surveys, Usability Tests, Analytics]",
+            "Description": "เลือกแหล่งข้อมูลการวิจัยผู้ใช้"
+          },
+          {
+            "Param_Name": "synthesis_method (วิธีการสังเคราะห์)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Affinity Mapping, Persona Creation, Journey Mapping]",
+            "Description": "เลือกวิธีการสังเคราะห์ข้อมูล"
+          },
+          {
+            "Param_Name": "report_format (รูปแบบรายงาน)",
+            "Data_Type": "Select",
+            "Scope_Format": "[.pdf, .md]",
+            "Description": "รูปแบบไฟล์สำหรับรายงานผลการสังเคราะห์"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Content_Architecture_Builder (ผู้สร้างโครงสร้างเนื้อหา)",
+        "Skill_ID": "CST-006-T2",
+        "Parameters": [
+          {
+            "Param_Name": "content_goals (เป้าหมายเนื้อหา)",
+            "Data_Type": "Text",
+            "Scope_Format": "e.g., \'Increase brand awareness\', \'Drive conversions\'",
+            "Description": "เป้าหมายหลักของเนื้อหาที่ต้องการสร้าง"
+          },
+          {
+            "Param_Name": "content_types (ประเภทเนื้อหา)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[Blog Posts, Videos, Infographics, Whitepapers, Social Media Posts]",
+            "Description": "เลือกประเภทของเนื้อหาที่ต้องการสร้าง"
+          },
+          {
+            "Param_Name": "information_architecture (สถาปัตยกรรมข้อมูล)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: Site map, Content model",
+            "Description": "แผนผังโครงสร้างข้อมูลและโมเดลเนื้อหา"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Narrative_Framework_Designer (ผู้ออกแบบกรอบการเล่าเรื่อง)",
+        "Skill_ID": "CST-006-T3",
+        "Parameters": [
+          {
+            "Param_Name": "story_theme (ธีมเรื่องราว)",
+            "Data_Type": "Text",
+            "Scope_Format": "Central theme or message of the narrative",
+            "Description": "ธีมหลักหรือข้อความสำคัญของเรื่องราว"
+          },
+          {
+            "Param_Name": "target_emotion (อารมณ์เป้าหมาย)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[Inspiration, Trust, Urgency, Joy]",
+            "Description": "เลือกอารมณ์ที่ต้องการสื่อถึงกลุ่มเป้าหมาย"
+          },
+          {
+            "Param_Name": "narrative_arc (โครงสร้างการเล่าเรื่อง)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: Storyboard, Narrative outline",
+            "Description": "โครงสร้างหรือแผนผังการเล่าเรื่อง"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Content_Performance_Analyzer (เครื่องมือวิเคราะห์ประสิทธิภาพเนื้อหา)",
+        "Skill_ID": "CST-006-T4",
+        "Parameters": [
+          {
+            "Param_Name": "content_platform (แพลตฟอร์มเนื้อหา)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[Website, Social Media, Email Marketing]",
+            "Description": "เลือกแพลตฟอร์มที่เนื้อหาถูกเผยแพร่"
+          },
+          {
+            "Param_Name": "metrics_to_track (ตัวชี้วัดที่ต้องการติดตาม)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[Engagement, Reach, Conversions, SEO Ranking]",
+            "Description": "เลือกตัวชี้วัดประสิทธิภาพที่ต้องการติดตาม"
+          },
+          {
+            "Param_Name": "analysis_report (รายงานผลการวิเคราะห์)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .pdf, .xlsx, .dashboard_link",
+            "Description": "รายงานสรุปผลการวิเคราะห์ประสิทธิภาพเนื้อหา"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Agent_Profile": "Innovation_Lab_Manager",
+    "Agent_ID": "ILM-007",
+    "Track": "Creative",
+    "Skills": [
+      {
+        "Skill_Name": "Tech_Trend_Scanner (เครื่องมือสแกนเทรนด์เทคโนโลยี)",
+        "Skill_ID": "ILM-007-T1",
+        "Parameters": [
+          {
+            "Param_Name": "industry_focus (อุตสาหกรรมที่เน้น)",
+            "Data_Type": "Text",
+            "Scope_Format": "e.g., \'AI\', \'Blockchain\', \'Biotech\'",
+            "Description": "อุตสาหกรรมหรือเทคโนโลยีที่ต้องการสแกนเทรนด์"
+          },
+          {
+            "Param_Name": "time_horizon (ช่วงเวลา)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Short-term (0-1 year), Mid-term (1-3 years), Long-term (3-5 years)]",
+            "Description": "ช่วงเวลาสำหรับเทรนด์ที่ต้องการวิเคราะห์"
+          },
+          {
+            "Param_Name": "trend_report (รายงานเทรนด์)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .pdf, .pptx",
+            "Description": "รายงานสรุปเทรนด์เทคโนโลยีที่สำคัญ"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Experiment_Designer (ผู้ออกแบบการทดลอง)",
+        "Skill_ID": "ILM-007-T2",
+        "Parameters": [
+          {
+            "Param_Name": "hypothesis (สมมติฐาน)",
+            "Data_Type": "Text",
+            "Scope_Format": "Clear statement of the hypothesis to be tested",
+            "Description": "สมมติฐานที่ต้องการทดสอบ"
+          },
+          {
+            "Param_Name": "experiment_variables (ตัวแปรการทดลอง)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[Independent Variable, Dependent Variable, Control Group]",
+            "Description": "ระบุตัวแปรอิสระ, ตัวแปรตาม และกลุ่มควบคุม"
+          },
+          {
+            "Param_Name": "experiment_plan (แผนการทดลอง)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: .md, .xlsx",
+            "Description": "เอกสารแผนการทดลองโดยละเอียด"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Prototyping_Toolkit (ชุดเครื่องมือสร้าง Prototype)",
+        "Skill_ID": "ILM-007-T3",
+        "Parameters": [
+          {
+            "Param_Name": "prototype_concept (แนวคิด Prototype)",
+            "Data_Type": "Text",
+            "Scope_Format": "Description of the prototype\'s core idea and functionality",
+            "Description": "แนวคิดหลักและฟังก์ชันการทำงานของ Prototype"
+          },
+          {
+            "Param_Name": "technology_stack (เทคโนโลยีที่ใช้)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[Web (React), Mobile (Flutter), Hardware (Arduino)]",
+            "Description": "เลือกเทคโนโลยีที่จะใช้ในการสร้าง Prototype"
+          },
+          {
+            "Param_Name": "prototype_output (ผลลัพธ์ Prototype)",
+            "Data_Type": "File",
+            "Scope_Format": "Output: Live demo link, Code repository, Video demo",
+            "Description": "ผลลัพธ์ของ Prototype (เช่น ลิงก์เดโม, โค้ด)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Agent_Profile": "Data_Scientist",
+    "Agent_ID": "DSC-008",
+    "Track": "Data",
+    "Skills": [
+      {
+        "Skill_Name": "Predictive_Model_Builder (ผู้สร้างโมเดลพยากรณ์)",
+        "Skill_ID": "DSC-008-T1",
+        "Parameters": [
+          {
+            "Param_Name": "target_variable (ตัวแปรเป้าหมาย)",
+            "Data_Type": "Text",
+            "Scope_Format": "The variable to be predicted",
+            "Description": "ตัวแปรที่ต้องการพยากรณ์"
+          },
+          {
+            "Param_Name": "features (คุณสมบัติ)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "List of features to use in the model",
+            "Description": "รายการคุณสมบัติที่จะใช้ในการสร้างโมเดล"
+          },
+          {
+            "Param_Name": "model_type (ประเภทโมเดล)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Regression, Classification, Time Series]",
+            "Description": "เลือกประเภทของโมเดลพยากรณ์"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Customer_Segmentation_Engine (เครื่องมือแบ่งกลุ่มลูกค้า)",
+        "Skill_ID": "DSC-008-T2",
+        "Parameters": [
+          {
+            "Param_Name": "customer_data_source (แหล่งข้อมูลลูกค้า)",
+            "Data_Type": "File",
+            "Scope_Format": "CSV or database connection string",
+            "Description": "แหล่งข้อมูลลูกค้าที่ต้องการนำมาแบ่งกลุ่ม"
+          },
+          {
+            "Param_Name": "segmentation_criteria (เกณฑ์การแบ่งกลุ่ม)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[Demographics, Behavior, Purchase History]",
+            "Description": "เลือกเกณฑ์ที่ใช้ในการแบ่งกลุ่มลูกค้า"
+          },
+          {
+            "Param_Name": "number_of_segments (จำนวนกลุ่ม)",
+            "Data_Type": "Number",
+            "Scope_Format": "Integer > 1",
+            "Description": "จำนวนกลุ่มลูกค้าที่ต้องการ"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Causal_Inference_Analyzer (เครื่องมือวิเคราะห์ความสัมพันธ์เชิงสาเหตุ)",
+        "Skill_ID": "DSC-008-T3",
+        "Parameters": [
+          {
+            "Param_Name": "treatment_variable (ตัวแปรการทดลอง)",
+            "Data_Type": "Text",
+            "Scope_Format": "The variable whose causal effect is being measured",
+            "Description": "ตัวแปรที่ต้องการวัดผลเชิงสาเหตุ"
+          },
+          {
+            "Param_Name": "outcome_variable (ตัวแปรผลลัพธ์)",
+            "Data_Type": "Text",
+            "Scope_Format": "The variable that is affected by the treatment",
+            "Description": "ตัวแปรที่ได้รับผลกระทบจากการทดลอง"
+          },
+          {
+            "Param_Name": "analysis_method (วิธีการวิเคราะห์)",
+            "Data_Type": "Select",
+            "Scope_Format": "[A/B Testing, Regression Discontinuity, Difference-in-Differences]",
+            "Description": "เลือกวิธีการวิเคราะห์ความสัมพันธ์เชิงสาเหตุ"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Agent_Profile": "Analytics_Engineer",
+    "Agent_ID": "AEN-009",
+    "Track": "Data",
+    "Skills": [
+      {
+        "Skill_Name": "Data_Pipeline_Generator (เครื่องมือสร้าง Data Pipeline)",
+        "Skill_ID": "AEN-009-T1",
+        "Parameters": [
+          {
+            "Param_Name": "source_system (ระบบต้นทาง)",
+            "Data_Type": "Text",
+            "Scope_Format": "e.g., \'CRM\', \'ERP\', \'Website Logs\'",
+            "Description": "ระบบต้นทางของข้อมูล"
+          },
+          {
+            "Param_Name": "destination_system (ระบบปลายทาง)",
+            "Data_Type": "Text",
+            "Scope_Format": "e.g., \'Data Warehouse\', \'Data Lake\'",
+            "Description": "ระบบปลายทางที่ต้องการส่งข้อมูลไป"
+          },
+          {
+            "Param_Name": "transformation_logic (Logic การแปลงข้อมูล)",
+            "Data_Type": "Text",
+            "Scope_Format": "SQL or Python script for data transformation",
+            "Description": "Logic หรือ Script สำหรับการแปลงข้อมูล"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Data_Quality_Monitor (เครื่องมือตรวจสอบคุณภาพข้อมูล)",
+        "Skill_ID": "AEN-009-T2",
+        "Parameters": [
+          {
+            "Param_Name": "data_source (แหล่งข้อมูล)",
+            "Data_Type": "Text",
+            "Scope_Format": "Database table name or file path",
+            "Description": "แหล่งข้อมูลที่ต้องการตรวจสอบคุณภาพ"
+          },
+          {
+            "Param_Name": "quality_rules (กฎคุณภาพข้อมูล)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[Completeness, Accuracy, Consistency, Uniqueness]",
+            "Description": "เลือกกฎคุณภาพข้อมูลที่ต้องการตรวจสอบ"
+          },
+          {
+            "Param_Name": "alerting_threshold (เกณฑ์การแจ้งเตือน)",
+            "Data_Type": "Number",
+            "Scope_Format": "Percentage (0-100)",
+            "Description": "เปอร์เซ็นต์ความผิดปกติที่ยอมรับได้ก่อนแจ้งเตือน"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "Data_Modeling_Architect (สถาปนิก Data Model)",
+        "Skill_ID": "AEN-009-T3",
+        "Parameters": [
+          {
+            "Param_Name": "business_requirements (ข้อกำหนดทางธุรกิจ)",
+            "Data_Type": "Text",
+            "Scope_Format": "Description of business needs for data analysis",
+            "Description": "ข้อกำหนดทางธุรกิจสำหรับการวิเคราะห์ข้อมูล"
+          },
+          {
+            "Param_Name": "data_sources (แหล่งข้อมูล)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "List of raw data sources",
+            "Description": "รายการแหล่งข้อมูลดิบที่จะนำมาใช้"
+          },
+          {
+            "Param_Name": "modeling_technique (เทคนิคการสร้างโมเดล)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Star Schema, Snowflake Schema, Data Vault]",
+            "Description": "เลือกเทคนิคการสร้าง Data Model"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Agent_Profile": "Business_Intelligence_Specialist",
+    "Agent_ID": "BIS-010",
+    "Track": "Data",
+    "Skills": [
+      {
+        "Skill_Name": "Dashboard_Creator (ผู้สร้าง Dashboard)",
+        "Skill_ID": "BIS-010-T1",
+        "Parameters": [
+          {
+            "Param_Name": "kpi_to_visualize (KPI ที่ต้องการแสดงผล)",
+            "Data_Type": "Multi-select",
+            "Scope_Format": "[Sales, Marketing, Operations, Finance]",
+            "Description": "เลือก KPI ที่ต้องการนำมาแสดงผลบน Dashboard"
+          },
+          {
+            "Param_Name": "data_source (แหล่งข้อมูล)",
+            "Data_Type": "Text",
+            "Scope_Format": "Database connection or file path",
+            "Description": "แหล่งข้อมูลที่จะใช้ในการสร้าง Dashboard"
+          },
+          {
+            "Param_Name": "dashboard_tool (เครื่องมือ Dashboard)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Tableau, Power BI, Looker Studio, Grafana]",
+            "Description": "เลือกเครื่องมือสำหรับสร้าง Dashboard"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "SQL_Query_Generator (เครื่องมือสร้าง SQL Query)",
+        "Skill_ID": "BIS-010-T2",
+        "Parameters": [
+          {
+            "Param_Name": "business_question (คำถามทางธุรกิจ)",
+            "Data_Type": "Text",
+            "Scope_Format": "e.g., \'What are the top 10 selling products last month?\'",
+            "Description": "คำถามทางธุรกิจที่ต้องการหาคำตอบด้วย SQL"
+          },
+          {
+            "Param_Name": "database_schema (Schema ฐานข้อมูล)",
+            "Data_Type": "File",
+            "Scope_Format": "SQL DDL or ERD image",
+            "Description": "Schema ของฐานข้อมูลที่ต้องการ Query"
+          },
+          {
+            "Param_Name": "output_format (รูปแบบผลลัพธ์)",
+            "Data_Type": "Select",
+            "Scope_Format": "[SQL Script, CSV]",
+            "Description": "รูปแบบไฟล์สำหรับผลลัพธ์ของ SQL Query"
+          }
+        ]
+      },
+      {
+        "Skill_Name": "KPI_Tracker (เครื่องมือติดตาม KPI)",
+        "Skill_ID": "BIS-010-T3",
+        "Parameters": [
+          {
+            "Param_Name": "kpi_definition (คำจำกัดความ KPI)",
+            "Data_Type": "Text",
+            "Scope_Format": "Clear definition of the Key Performance Indicator",
+            "Description": "คำจำกัดความของ KPI ที่ต้องการติดตาม"
+          },
+          {
+            "Param_Name": "target_value (ค่าเป้าหมาย)",
+            "Data_Type": "Number",
+            "Scope_Format": "Numerical target for the KPI",
+            "Description": "ค่าเป้าหมายเชิงตัวเลขสำหรับ KPI"
+          },
+          {
+            "Param_Name": "tracking_frequency (ความถี่ในการติดตาม)",
+            "Data_Type": "Select",
+            "Scope_Format": "[Daily, Weekly, Monthly, Quarterly]",
+            "Description": "ความถี่ในการติดตามและรายงาน KPI"
+          }
+        ]
+      }
+    ]
+  }
+]
+
