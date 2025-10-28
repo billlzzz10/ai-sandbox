@@ -101,8 +101,10 @@ class Agent {
 }
 
 function ensureWithinBase(targetPath) {
-  const relative = path.relative(BASE_DATA_DIR, targetPath);
-  if (relative.startsWith('..') || path.isAbsolute(relative)) {
+  // Canonicalize both base and target paths for robust containment checking
+  const baseRealPath = fs.realpathSync(BASE_DATA_DIR);
+  const targetRealPath = fs.realpathSync(targetPath);
+  if (!targetRealPath.startsWith(baseRealPath + path.sep)) {
     throw new Error('Access to the requested path is not permitted.');
   }
 }
@@ -115,14 +117,14 @@ function resolveRelativeFile(base, relativePath) {
   const baseDir = fs.existsSync(base) && fs.statSync(base).isDirectory()
     ? base
     : path.dirname(base);
-  const absolutePath = path.resolve(baseDir, relativePath);
-  ensureWithinBase(absolutePath);
-
-  if (!fs.existsSync(absolutePath)) {
+  const resolvedPath = path.resolve(baseDir, relativePath);
+  // Use realpathSync for normalization before checks and returning
+  if (!fs.existsSync(resolvedPath)) {
     throw new Error(`Missing import: ${relativePath}`);
   }
-
-  return absolutePath;
+  const realPath = fs.realpathSync(resolvedPath);
+  ensureWithinBase(realPath);
+  return realPath;
 }
 
 function readFile(filePath) {
