@@ -104,7 +104,7 @@ function ensureWithinBase(targetPath) {
   // Canonicalize both base and target paths for robust containment checking
   const baseRealPath = fs.realpathSync(BASE_DATA_DIR);
   const targetRealPath = fs.realpathSync(targetPath);
-  if (!targetRealPath.startsWith(baseRealPath + path.sep)) {
+  if (!targetRealPath.startsWith(baseRealPath + path.sep) && targetRealPath !== baseRealPath) {
     throw new Error('Access to the requested path is not permitted.');
   }
 }
