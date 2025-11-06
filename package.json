@@ -4,7 +4,7 @@
   "description": "Express-based runtime for the AI Agent Sandbox architecture.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "ts-node server.ts",
     "dev": "NODE_ENV=development node server.js",
     "test": "node scripts/smoke-test.js"
   },
@@ -12,8 +12,19 @@
     "node": ">=18"
   },
   "dependencies": {
+    "@types/diff": "^7.0.2",
+    "@types/express": "^5.0.3",
+    "@types/glob": "^8.1.0",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^24.8.0",
+    "@types/source-map-support": "^0.5.10",
+    "diff": "^8.0.2",
     "express": "^4.19.2",
+    "glob": "^11.0.3",
     "helmet": "^7.0.0",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "source-map-support": "^0.5.21",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

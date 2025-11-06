@@ -17,3 +17,9 @@ npm-debug.log*
 
 # Misc
 .DS_Store
+
+# AI Sandbox Specific
+.work/
+logs/
+legacy_agent_logic.js
+memory/store.jsonl
