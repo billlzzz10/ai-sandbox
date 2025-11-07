@@ -1,10 +1,33 @@
 import { execFile } from 'node:child_process';
-import { promisify } from 'node:util';
 import { performance } from 'node:perf_hooks';
 
 import { sanitizeShellCommand } from './utils/security';
 
-const execFileAsync = promisify(execFile);
+function execFileAsync(
+  file: string,
+  args: readonly string[] = [],
+  options?: { [key: string]: any },
+): Promise<{ stdout: string; stderr: string }> {
+  return new Promise((resolve, reject) => {
+    execFile(file, args as string[], options || {}, (err, stdout, stderr) => {
+      // Normalize stdout/stderr to strings for consistent downstream handling
+      const normStdout =
+        typeof stdout === 'string' ? stdout : Buffer.isBuffer(stdout) ? stdout.toString() : '';
+      const normStderr =
+        typeof stderr === 'string' ? stderr : Buffer.isBuffer(stderr) ? stderr.toString() : '';
+
+      if (err) {
+        // Attach stdout/stderr to the error so existing error handling can read them
+        (err as any).stdout = normStdout;
+        (err as any).stderr = normStderr;
+        reject(err);
+        return;
+      }
+
+      resolve({ stdout: normStdout, stderr: normStderr });
+    });
+  });
+}
 
 export type TestRunnerErrorReason = 'VALIDATION' | 'EXECUTION' | 'TIMEOUT';
 
