@@ -56,7 +56,7 @@ export function sanitizeWorkspacePath(
 
   const resolved = path.resolve(baseDir, trimmed);
   const normalizedBase = baseDir.endsWith(path.sep) ? baseDir : `${baseDir}${path.sep}`;
-  if (!resolved.startsWith(normalizedBase) && resolved !== baseDir) {
+  if (!resolved.startsWith(normalizedBase)) {
     throw new Error('Resolved path escapes the workspace directory.');
   }
   return resolved;
