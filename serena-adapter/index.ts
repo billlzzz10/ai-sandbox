@@ -49,24 +49,29 @@ async function findFilesMatching(pattern: RegExp, limit = 25): Promise<any[]> {
     }
 
     if (stat.isFile()) {
-      const content = await fs.readFile(current, 'utf-8');
-      const match = pattern.exec(content);
-      if (match) {
-        const relative = path.relative(WORKSPACE_ROOT, current);
-        const beforeMatch = content.slice(0, match.index ?? 0);
-        const line = beforeMatch.split('\n').length;
-        results.push({
-          filePath: relative,
-          line,
-          match: match[0],
-          location: {
-            uri: `file://${path.join(WORKSPACE_ROOT, relative)}`,
-            range: {
-              start: { line: Math.max(0, line - 1), character: 0 },
-              end: { line: Math.max(0, line - 1), character: match[0].length },
+      try {
+        const content = await fs.readFile(current, 'utf-8');
+        const match = pattern.exec(content);
+        if (match) {
+          const relative = path.relative(WORKSPACE_ROOT, current);
+          const beforeMatch = content.slice(0, match.index ?? 0);
+          const line = beforeMatch.split('\n').length;
+          results.push({
+            filePath: relative,
+            line,
+            match: match[0],
+            location: {
+              uri: ` relative)}`,
+              range: {
+                start: { line: Math.max(0, line - 1), character: 0 },
+                end: { line: Math.max(0, line - 1), character: match[0].length },
+              },
             },
-          },
-        });
+          });
+        }
+      } catch (error) {
+        // Skip files that cannot be read due to permissions or other errors
+        continue;
       }
       continue;
     }
