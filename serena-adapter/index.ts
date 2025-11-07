@@ -72,13 +72,22 @@ async function findFilesMatching(pattern: RegExp, limit = 25): Promise<any[]> {
     }
 
     if (stat.isDirectory()) {
-      const entries = await fs.readdir(current);
-      for (const entry of entries) {
-        if (['node_modules', '.git', 'dist'].includes(entry)) {
-          continue;
+      try {
+        const entries = await fs.readdir(current);
+        for (const entry of entries) {
+          if (['node_modules', '.git', 'dist'].includes(entry)) {
+            continue;
+          }
+          const next = path.join(current, entry);
+          const nextStat = await fs.lstat(next).catch(() => null);
+          if (nextStat?.isSymbolicLink()) {
+            continue; // Skip symbolic links to prevent traversal
+          }
+          queue.push(next);
         }
-        const next = path.join(current, entry);
-        queue.push(next);
+      } catch (error) {
+        // Skip directories that cannot be read
+        continue;
       }
     }
   }
