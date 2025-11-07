@@ -159,12 +159,6 @@ router.post('/:taskId/execute', async (req: Request, res: Response) => {
     return res.status(404).json({ error: `Task with ID '${taskId}' not found.` });
   }
 
-  if (executionQueue.isSaturated()) {
-    return res
-      .status(429)
-      .json({ error: 'Test execution concurrency limit reached. Please retry shortly.' });
-  }
-
   try {
     const result = await executionQueue.run(() => runTestCommand(command));
     taskState.recordExecution(taskId, {
