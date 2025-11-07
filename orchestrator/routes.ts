@@ -172,7 +172,12 @@ router.post('/:taskId/execute', async (req: Request, res: Response) => {
     return res.status(200).json({ taskId, result });
   } catch (error) {
     if (error instanceof TestRunnerError) {
-      const status = error.reason === 'VALIDATION' ? 400 : error.reason === 'TIMEOUT' ? 504 : 502;
+      const statusMap = {
+        'VALIDATION': 400,
+        'TIMEOUT': 504,
+        'EXECUTION': 502
+      } as const;
+      const status = statusMap[error.reason] ?? 500;
       taskState.recordExecution(taskId, {
         command: error.command ?? command,
         success: false,
