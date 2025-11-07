@@ -84,10 +84,9 @@ export async function runTestCommand(command: string, options: RunTestOptions = 
     if (
       error &&
       typeof error === 'object' &&
-      'killed' in error &&
-      (error as any).killed &&
-      'signal' in error &&
-      (error as any).signal === 'SIGTERM'
+      ('killed' in error && (error as any).killed) ||
+      ('signal' in error && ['SIGTERM', 'SIGKILL'].includes((error as any).signal)) ||
+      ('code' in error && (error as any).code === 'ETIMEDOUT')
     ) {
       throw new TestRunnerError('Command timed out.', 'TIMEOUT', {
         command: sanitized.command,
