@@ -2,7 +2,7 @@ import path from 'node:path';
 import validator from 'validator';
 
 const DEFAULT_ALLOWED_COMMAND_CHARS =
-  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._/:@=,(){}[]+" + ' ';
+  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._/:@=,(){}[]" + ' ';
 const DEFAULT_ALLOWED_PATH_CHARS =
   "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._/:@" + ' ';
 
