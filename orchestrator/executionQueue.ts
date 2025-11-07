@@ -12,6 +12,9 @@ export class ExecutionQueue {
   }
 
   async run<T>(task: () => Promise<T>): Promise<T> {
+    if (this.active >= this.limit) {
+      throw new Error('Execution queue is saturated');
+    }
     this.active += 1;
     try {
       return await task();
