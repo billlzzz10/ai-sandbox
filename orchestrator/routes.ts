@@ -1,10 +1,15 @@
 import { Router, Request, Response } from 'express';
-import { serenaAdapter } from '../serena-adapter';
-import { taskState } from './state';
-import { Plan } from './interfaces';
-import { logger } from '../telemetry/logger';
-import { memoryStore } from '../memory/store';
 import { randomBytes } from 'crypto';
+
+import { serenaAdapter } from '../serena-adapter';
+import { memoryStore } from '../memory/store';
+import { logger } from '../telemetry/logger';
+import { TestRunnerError, runTestCommand } from '../testRunner';
+import { validateRules } from '../validate';
+import { truncateForStorage } from '../utils/security';
+import { executionQueue } from './shared';
+import { Plan } from './interfaces';
+import { taskState } from './state';
 
 const router = Router();
 
@@ -74,7 +79,9 @@ router.post('/approve_plan', async (req: Request, res: Response) => {
     }
 
     if (task.status !== 'PLANNING') {
-        return res.status(409).json({ error: `Task is not in a plannable state. Current state: ${task.status}`})
+      return res
+        .status(409)
+        .json({ error: `Task is not in a plannable state. Current state: ${task.status}` });
     }
 
     // Update task state to approved
@@ -94,6 +101,109 @@ router.post('/approve_plan', async (req: Request, res: Response) => {
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
     logger.error('Failed to approve plan', { taskId, error: errorMessage });
     res.status(500).json({ error: 'Failed to approve plan.' });
+  }
+});
+
+// POST /tasks/:taskId/review
+router.post('/:taskId/review', async (req: Request, res: Response) => {
+  const { taskId } = req.params;
+  const { diffContent } = req.body ?? {};
+
+  if (!diffContent || typeof diffContent !== 'string' || !diffContent.trim()) {
+    return res.status(400).json({ error: 'A non-empty diffContent string is required.' });
+  }
+
+  try {
+    const task = taskState.getTask(taskId);
+    if (!task) {
+      return res.status(404).json({ error: `Task with ID '${taskId}' not found.` });
+    }
+
+    const validation = validateRules(diffContent);
+    taskState.recordReview(taskId, {
+      diff: truncateForStorage(diffContent),
+      valid: validation.valid,
+      violations: validation.violations,
+    });
+
+    if (!validation.valid) {
+      return res.status(400).json({
+        error: 'Rules violation',
+        violations: validation.violations,
+      });
+    }
+
+    return res.status(200).json({
+      taskId,
+      status: 'REVIEW_APPROVED',
+      message: 'Diff validated successfully.',
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'An unknown error occurred.';
+    logger.error('Failed to record review', { taskId, error: message });
+    return res.status(500).json({ error: 'Failed to process review.' });
+  }
+});
+
+// POST /tasks/:taskId/execute
+router.post('/:taskId/execute', async (req: Request, res: Response) => {
+  const { taskId } = req.params;
+  const { command } = req.body ?? {};
+
+  if (!command || typeof command !== 'string') {
+    return res.status(400).json({ error: 'A non-empty command string is required.' });
+  }
+
+  const task = taskState.getTask(taskId);
+  if (!task) {
+    return res.status(404).json({ error: `Task with ID '${taskId}' not found.` });
+  }
+
+  if (executionQueue.isSaturated()) {
+    return res
+      .status(429)
+      .json({ error: 'Test execution concurrency limit reached. Please retry shortly.' });
+  }
+
+  try {
+    const result = await executionQueue.run(() => runTestCommand(command));
+    taskState.recordExecution(taskId, {
+      command: result.command,
+      success: true,
+      stdout: result.stdout,
+      stderr: result.stderr,
+      exitCode: result.exitCode,
+      durationMs: result.durationMs,
+    });
+    return res.status(200).json({ taskId, result });
+  } catch (error) {
+    if (error instanceof TestRunnerError) {
+      const status = error.reason === 'VALIDATION' ? 400 : error.reason === 'TIMEOUT' ? 504 : 502;
+      taskState.recordExecution(taskId, {
+        command: error.command ?? command,
+        success: false,
+        stdout: error.stdout ?? '',
+        stderr: error.stderr ?? error.message,
+        exitCode: typeof error.exitCode === 'number' ? error.exitCode : -1,
+        durationMs: error.durationMs ?? 0,
+      });
+      return res.status(status).json({
+        error: error.message,
+        reason: error.reason,
+      });
+    }
+
+    const message = error instanceof Error ? error.message : 'Unknown execution failure.';
+    logger.error('Failed to execute task command', { taskId, error: message });
+    taskState.recordExecution(taskId, {
+      command,
+      success: false,
+      stdout: '',
+      stderr: message,
+      exitCode: -1,
+      durationMs: 0,
+    });
+    return res.status(500).json({ error: 'Failed to execute command.' });
   }
 });
 

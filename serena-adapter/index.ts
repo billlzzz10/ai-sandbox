@@ -1,4 +1,90 @@
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
+import validator from 'validator';
+
 import { logger } from '../telemetry/logger';
+import { sanitizeWorkspacePath } from '../utils/security';
+
+const WORKSPACE_ROOT = process.env.WORKSPACE_DIR
+  ? path.resolve(process.env.WORKSPACE_DIR)
+  : path.resolve(process.cwd());
+
+const SEARCH_DIRECTORIES = ['.', 'orchestrator', 'serena-adapter', 'telemetry', 'memory'];
+
+function sanitizePattern(pattern: string): RegExp {
+  const trimmed = validator.trim(pattern ?? '');
+  if (!validator.isLength(trimmed, { min: 1, max: 128 })) {
+    throw new Error('Search pattern must be between 1 and 128 characters.');
+  }
+  if (trimmed.includes('\n')) {
+    throw new Error('Search pattern must be a single line.');
+  }
+  const escaped = trimmed.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(escaped, 'i');
+}
+
+async function safeReadFile(filePath: string): Promise<string> {
+  const resolved = sanitizeWorkspacePath(filePath, WORKSPACE_ROOT);
+  return fs.readFile(resolved, 'utf-8');
+}
+
+async function findFilesMatching(pattern: RegExp, limit = 25): Promise<any[]> {
+  const results: any[] = [];
+  const visited = new Set<string>();
+
+  const queue: string[] = SEARCH_DIRECTORIES.map(directory =>
+    sanitizeWorkspacePath(directory, WORKSPACE_ROOT),
+  );
+
+  while (queue.length > 0 && results.length < limit) {
+    const current = queue.shift()!;
+    if (visited.has(current)) {
+      continue;
+    }
+    visited.add(current);
+
+    const stat = await fs.stat(current).catch(() => null);
+    if (!stat) {
+      continue;
+    }
+
+    if (stat.isFile()) {
+      const content = await fs.readFile(current, 'utf-8');
+      const match = pattern.exec(content);
+      if (match) {
+        const relative = path.relative(WORKSPACE_ROOT, current);
+        const beforeMatch = content.slice(0, match.index ?? 0);
+        const line = beforeMatch.split('\n').length;
+        results.push({
+          filePath: relative,
+          line,
+          match: match[0],
+          location: {
+            uri: `file://${path.join(WORKSPACE_ROOT, relative)}`,
+            range: {
+              start: { line: Math.max(0, line - 1), character: 0 },
+              end: { line: Math.max(0, line - 1), character: match[0].length },
+            },
+          },
+        });
+      }
+      continue;
+    }
+
+    if (stat.isDirectory()) {
+      const entries = await fs.readdir(current);
+      for (const entry of entries) {
+        if (['node_modules', '.git', 'dist'].includes(entry)) {
+          continue;
+        }
+        const next = path.join(current, entry);
+        queue.push(next);
+      }
+    }
+  }
+
+  return results.slice(0, limit);
+}
 
 /**
  * Mocks a client for the Serena (MCP) service.
@@ -16,16 +102,17 @@ class SerenaAdapter {
    * @returns A mock location of the symbol.
    */
   async find_symbol(filePath: string, symbol: string): Promise<any> {
-    logger.info(`[SerenaAdapter] Called find_symbol for '${symbol}' in '${filePath}'`);
-    // Mock response
+    const sanitizedPath = sanitizeWorkspacePath(filePath, WORKSPACE_ROOT);
+    const safeSymbol = validator.trim(symbol ?? '');
+    logger.info(`[SerenaAdapter] Called find_symbol for '${safeSymbol}' in '${sanitizedPath}'`);
     return {
-      filePath,
-      symbol,
+      filePath: path.relative(WORKSPACE_ROOT, sanitizedPath),
+      symbol: safeSymbol,
       location: {
-        uri: `file://${process.cwd()}/${filePath}`,
+        uri: `file://${sanitizedPath}`,
         range: {
-          start: { line: 10, character: 4 },
-          end: { line: 10, character: 15 },
+          start: { line: 1, character: 0 },
+          end: { line: 1, character: Math.max(0, safeSymbol.length - 1) },
         },
       },
     };
@@ -38,20 +125,27 @@ class SerenaAdapter {
    * @returns A list of mock reference locations.
    */
   async find_referencing_symbols(filePath: string, symbol: string): Promise<any[]> {
-    logger.info(`[SerenaAdapter] Called find_referencing_symbols for '${symbol}' from '${filePath}'`);
-    // Mock response
-    return [
-      {
-        filePath: 'some/other/file.ts',
-        location: {
-          uri: `file://${process.cwd()}/some/other/file.ts`,
-          range: {
-            start: { line: 5, character: 20 },
-            end: { line: 5, character: 31 },
+    const sanitizedPath = sanitizeWorkspacePath(filePath, WORKSPACE_ROOT);
+    const safeSymbol = validator.trim(symbol ?? '');
+    logger.info(
+      `[SerenaAdapter] Called find_referencing_symbols for '${safeSymbol}' from '${sanitizedPath}'`,
+    );
+
+    const pattern = sanitizePattern(safeSymbol);
+    const matches = await findFilesMatching(pattern, 10);
+
+    if (matches.length === 0) {
+      return [
+        {
+          filePath: path.relative(WORKSPACE_ROOT, sanitizedPath),
+          location: {
+            uri: `file://${sanitizedPath}`,
           },
         },
-      },
-    ];
+      ];
+    }
+
+    return matches;
   }
 
   /**
@@ -61,9 +155,15 @@ class SerenaAdapter {
    * @returns The mock content of the file.
    */
   async read_file(filePath: string): Promise<string> {
-    logger.info(`[SerenaAdapter] Called read_file for '${filePath}'`);
-    // Mock response
-    return `// Mock content of ${filePath}\\nconsole.log("hello world");`;
+    const sanitizedPath = sanitizeWorkspacePath(filePath, WORKSPACE_ROOT);
+    logger.info(`[SerenaAdapter] Reading file '${sanitizedPath}'`);
+    try {
+      return await safeReadFile(path.relative(WORKSPACE_ROOT, sanitizedPath));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unable to read file.';
+      logger.error('Failed to read file', { filePath: sanitizedPath, error: message });
+      throw new Error(message);
+    }
   }
 
   /**
@@ -72,15 +172,9 @@ class SerenaAdapter {
    * @returns A list of mock search results.
    */
   async search_for_pattern(pattern: string): Promise<any[]> {
-    logger.info(`[SerenaAdapter] Called search_for_pattern with pattern: ${pattern}`);
-    // Mock response
-    return [
-      {
-        filePath: 'some/file.ts',
-        line: 42,
-        match: 'some matching text',
-      },
-    ];
+    const safePattern = sanitizePattern(pattern);
+    logger.info(`[SerenaAdapter] Searching for pattern: ${safePattern}`);
+    return findFilesMatching(safePattern, 25);
   }
 
   /**
@@ -89,6 +183,7 @@ class SerenaAdapter {
    * @param content - The content to write.
    */
   async write_file(filePath: string, content: string): Promise<void> {
+    sanitizeWorkspacePath(filePath, WORKSPACE_ROOT);
     logger.warn(`[SerenaAdapter] STUB: write_file called for '${filePath}', but it is disabled.`);
     throw new Error('Writing files is currently disabled in this phase.');
   }

@@ -1,11 +1,13 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import helmet from 'helmet';
 import 'source-map-support/register';
+import path from 'node:path';
 
 import { loggingMiddleware } from './telemetry/middleware';
 import { logger } from './telemetry/logger';
 import { orchestratorRoutes } from './orchestrator/routes';
 import { memoryRoutes } from './memory/routes';
+import { taskState } from './orchestrator/state';
 
 // Import legacy functions
 const { loadAgent, improvePromptStub } = require('./legacy_agent_logic');
@@ -13,6 +15,9 @@ const { loadAgent, improvePromptStub } = require('./legacy_agent_logic');
 function createServer(): Express {
   const app = express();
   app.disable('x-powered-by');
+
+  app.set('views', path.join(__dirname, 'views'));
+  app.set('view engine', 'ejs');
 
   // Middlewares
   app.use(helmet());
@@ -27,6 +32,31 @@ function createServer(): Express {
   // --- New Routes ---
   app.use('/tasks', orchestratorRoutes);
   app.use('/memory', memoryRoutes);
+
+  app.get('/tasks/:taskId/review', (req: Request, res: Response) => {
+    const taskId = req.params.taskId;
+    const review = taskState.getLatestReview(taskId);
+    if (!review) {
+      return res.status(404).render('review', {
+        taskId,
+        error: 'No review available for this task yet.',
+        diffLines: [],
+        violations: [],
+      });
+    }
+
+    const diffLines = review.diff.split('\n').map(line => ({
+      type: line.startsWith('+') ? 'addition' : line.startsWith('-') ? 'removal' : 'context',
+      content: line,
+    }));
+
+    return res.render('review', {
+      taskId,
+      diffLines,
+      error: undefined,
+      violations: review.violations,
+    });
+  });
 
   // --- Existing Agent Routes (Legacy) ---
   const agentRouter = express.Router();
