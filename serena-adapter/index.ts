@@ -126,7 +126,7 @@ class SerenaAdapter {
         uri: `file://${sanitizedPath}`,
         range: {
           start: { line: 1, character: 0 },
-          end: { line: 1, character: Math.max(0, safeSymbol.length - 1) },
+          end: { line: 1, character: Math.max(0, safeSymbol.length) },
         },
       },
     };
