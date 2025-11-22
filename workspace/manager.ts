@@ -102,6 +102,13 @@ class WorkspaceManager {
     const diffs = [];
 
     const sourceDir = process.env.TEST_SOURCE_DIR || process.cwd();
+    const sourceFiles = await glob('**/*', {
+      cwd: sourceDir,
+      nodir: true,
+      ignore: ['node_modules/**', '.git/**', '.work/**'],
+    });
+
+    const workspaceFileSet = new Set(workspaceFiles);
 
     for (const file of workspaceFiles) {
       const originalPath = path.join(sourceDir, file);
@@ -128,6 +135,18 @@ class WorkspaceManager {
           throw error;
         }
       }
+    }
+
+    for (const file of sourceFiles) {
+      if (workspaceFileSet.has(file)) {
+        continue;
+      }
+
+      const originalPath = path.join(sourceDir, file);
+      const originalContent = await fs.readFile(originalPath, 'utf8');
+      const patch = createPatch(file, originalContent, '');
+      diffs.push({ path: file, diff: patch });
+      logger.info(`Detected deleted file ${file} for task ${taskId}`);
     }
 
     return diffs;
