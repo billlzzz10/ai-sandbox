@@ -169,6 +169,9 @@
             "Data_Type": "File",
             "Scope_Format": "JSON Schema file (.json)",
             "Description": "ไฟล์ JSON Schema สำหรับตรวจสอบความถูกต้องของข้อมูล",
-           }
-     {
+            }
+        ]
+      }
+    ]
+  }
 ]
